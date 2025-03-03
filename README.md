@@ -1,2 +1,3 @@
-# otto
-✅ Social media posts, managed 
+# Otto
+
+Social media posts, managed
