@@ -1,4 +1,5 @@
-import { PostProps, ProfileProps } from "@/types";
+import { getHumanDate } from "@/lib";
+import { GroupedPost, PostProps, ProfileProps } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { FaXTwitter, FaLinkedinIn, FaBluesky } from "react-icons/fa6";
@@ -35,18 +36,9 @@ function Profile(props: ProfileProps) {
 
 export function Post(props: PostProps) {
   const { icon: Icon, color } = Icons[props.platform.name];
-  const [day, month, year] = props.date.split("-");
-  const humanDate = new Date(+year, +month - 1, +day).toLocaleDateString(
-    "en-US",
-    {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }
-  );
 
   return (
-    <div className="rounded-lg shadow p-4 w-full max-w-sm">
+    <div className="rounded-lg shadow p-4 w-full max-w-sm border border-neutral-100">
       <div className="flex gap-2 justify-between mb-4">
         <Profile {...props.profile} />
         <div className="flex-1"></div>
@@ -66,7 +58,7 @@ export function Post(props: PostProps) {
           : props.content}
       </div>
       <div className="text-sm flex text-neutral-500">
-        {humanDate} •{" "}
+        {getHumanDate(props.date)} •{" "}
         {props.platform.name[0].toUpperCase() +
           props.platform.name.substring(1)}
       </div>
@@ -74,6 +66,20 @@ export function Post(props: PostProps) {
   );
 }
 
-export function GroupPost() {
-  return <div className="rounded-lg shadow p-4 w-full max-w-md"></div>;
+export function GroupPost(props: GroupedPost) {
+  const posts = [] as PostProps[];
+
+  return (
+    <div className="p-2 border-l border-neutral-300">
+      <div className="uppercase text-xs tracking-wider mb-4">
+        <span className="text-neutral-800">{props.name}</span> •{" "}
+        <span className="text-neutral-500">{getHumanDate(props.date)}</span>
+      </div>
+      <div className="flex gap-4 flex-col">
+        {posts.map((post) => (
+          <Post key={`${props.name}-${post.platform.name}`} {...post} />
+        ))}
+      </div>
+    </div>
+  );
 }
