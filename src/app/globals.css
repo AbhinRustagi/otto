@@ -3,6 +3,9 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --linkedin: #0a66c2;
+  --twitter: #000;
+  --bluesky: rgb(32, 139, 254);
 }
 
 body {
